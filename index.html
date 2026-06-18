@@ -74,33 +74,61 @@
         <table bgcolor="#eae3d2" cellpadding="10" style="border: 1px solid #5c1d1d; border-radius: 8px;">
             <tr>
                 <td>
-                    <form action="#" method="post">
-                        <p>
-                            <label><font face="Georgia, serif">Full Name:</font></label><br>
-                            <input type="text" name="client_name" required size="40">
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Email Address:</font></label><br>
-                            <input type="email" name="client_email" required size="40">
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Preferred Car Model:</font></label><br>
-                            <select name="car_model">
-                                <option value="mercedes">Mercedes-Benz 300SL</option>
-                                <option value="jaguar">Jaguar E-Type</option>
-                                <option value="mustang">Shelby Mustang GT500</option>
-                            </select>
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Preferred Date:</font></label><br>
-                            <input type="date" name="booking_date" required>
-                        </p>
-                        <p>
-                            <center>
-                                <input type="submit" value="Request Appointment" style="background-color: #5c1d1d; color: white; padding: 10px 20px; border: none; font-family: Georgia, serif; cursor: pointer;">
-                            </center>
-                        </p>
-                    </form>
+                   <form id="viewingForm" method="post">
+    <p>
+        <label><font face="Georgia, serif">Full Name:</font></label><br>
+        <input type="text" name="client_name" required size="40">
+    </p>
+    <p>
+        <label><font face="Georgia, serif">Email Address:</font></label><br>
+        <input type="email" name="client_email" required size="40">
+    </p>
+    <p>
+        <label><font face="Georgia, serif">Preferred Car Model:</font></label><br>
+        <select name="car_model">
+            <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
+            <option value="Jaguar E-Type">Jaguar E-Type</option>
+            <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
+        </select>
+    </p>
+    <p>
+        <label><font face="Georgia, serif">Preferred Date:</font></label><br>
+        <input type="date" name="booking_date" required>
+    </p>
+    <p>
+        <center>
+            <input type="submit" value="Request Appointment" style="background-color: #5c1d1d; color: white; padding: 10px 20px; border: none; font-family: Georgia, serif; cursor: pointer;">
+        </center>
+    </p>
+</form>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxkBk0c7oNuMPU6Mff9vXv-RKdsKDAsi00d9EoYD4Ll6laWoDkK7qnYmlvC0yvnVo6H/exec'; // <--- Paste your Google Script Web App URL here
+    const form = document.getElementById('viewingForm');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault(); // Prevents the page from refreshing
+        
+        // Change button text to show progress
+        const submitBtn = form.querySelector('input[type="submit"]');
+        submitBtn.value = "Sending...";
+        submitBtn.disabled = true;
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => {
+                alert('Thank you! Your private showroom viewing request has been received.');
+                form.reset(); // Clear the form fields
+                submitBtn.value = "Request Appointment";
+                submitBtn.disabled = false;
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('An error occurred. Please try again.');
+                submitBtn.value = "Request Appointment";
+                submitBtn.disabled = false;
+            });
+    });
+</script>
                 </td>
             </tr>
         </table>
