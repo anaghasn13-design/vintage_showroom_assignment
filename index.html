@@ -41,27 +41,39 @@
         <table border="2" cellpadding="10" cellspacing="0" bgcolor="#ffffff" width="70%">
             <tr bgcolor="#5c1d1d">
                 <th><font color="white" face="Georgia, serif">Model Year</font></th>
-                <th><font color="white" face="Georgia, serif">Car Model</font></th>
+                <th><font color="white" face="Georgia, serif">Car Model (Click for History)</font></th>
                 <th><font color="white" face="Georgia, serif">Engine Type</font></th>
                 <th><font color="white" face="Georgia, serif">Estimated Value</font></th>
             </tr>
             <tr>
                 <td><font face="Georgia, serif">1954</font></td>
-                <td><font face="Georgia, serif">Mercedes-Benz 300SL Gullwing</font></td>
+                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Mercedes-Benz_300_SL" target="_blank" style="color: #5c1d1d; font-weight: bold;">Mercedes-Benz 300SL Gullwing</a></font></td>
                 <td><font face="Georgia, serif">3.0L I6</font></td>
                 <td><font face="Georgia, serif">$1,500,000</font></td>
             </tr>
             <tr>
                 <td><font face="Georgia, serif">1961</font></td>
-                <td><font face="Georgia, serif">Jaguar E-Type Series 1 Roadster</font></td>
+                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Jaguar_E-Type" target="_blank" style="color: #5c1d1d; font-weight: bold;">Jaguar E-Type Series 1 Roadster</a></font></td>
                 <td><font face="Georgia, serif">3.8L I6</font></td>
                 <td><font face="Georgia, serif">$250,000</font></td>
             </tr>
             <tr>
                 <td><font face="Georgia, serif">1967</font></td>
-                <td><font face="Georgia, serif">Shelby Mustang GT500</font></td>
+                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Shelby_Mustang" target="_blank" style="color: #5c1d1d; font-weight: bold;">Shelby Mustang GT500</a></font></td>
                 <td><font face="Georgia, serif">7.0L V8</font></td>
                 <td><font face="Georgia, serif">$350,000</font></td>
+            </tr>
+            <tr>
+                <td><font face="Georgia, serif">1962</font></td>
+                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Ferrari_250_GTO" target="_blank" style="color: #5c1d1d; font-weight: bold;">Ferrari 250 GTO</a></font></td>
+                <td><font face="Georgia, serif">3.0L V12</font></td>
+                <td><font face="Georgia, serif">$70,000,000</font></td>
+            </tr>
+            <tr>
+                <td><font face="Georgia, serif">1970</font></td>
+                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Dodge_Charger_(B-body)" target="_blank" style="color: #5c1d1d; font-weight: bold;">Dodge Charger R/T</a></font></td>
+                <td><font face="Georgia, serif">7.2L V8</font></td>
+                <td><font face="Georgia, serif">$110,000</font></td>
             </tr>
         </table>
     </center>
@@ -89,6 +101,8 @@
                                 <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
                                 <option value="Jaguar E-Type">Jaguar E-Type</option>
                                 <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
+                                <option value="Ferrari 250 GTO">Ferrari 250 GTO</option>
+                                <option value="Dodge Charger R/T">Dodge Charger R/T</option>
                             </select>
                         </p>
                         <p>
@@ -131,13 +145,11 @@
 
 <script>
     // ⚠️ PASTE YOUR GOOGLE WEB APP URL INSIDE THE SINGLE QUOTES BELOW:
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwENXDb5c02YvLbB1PvZiJ2W_f5M5MhMuQlmrWIgCTO7B4z3QTHgJYsLe7o3g0DVHRb/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyTzwzFUzHNVE96PIm35cV78PgQqhJTv48Xq9hk6zAPBaEhqXQCLgH2YXIpPfWh4gCM/exec'; 
     const form = document.getElementById('viewingForm');
 
-    // Automatically load the list of requested people when the page opens
     window.addEventListener('DOMContentLoaded', loadRequestedDetails);
 
-    // Function 1: READ and show requested details in the table
     function loadRequestedDetails() {
         const tableBody = document.getElementById('requestsTableBody');
         
@@ -145,14 +157,13 @@
             .then(response => response.json())
             .then(result => {
                 if (result.status === "success") {
-                    tableBody.innerHTML = ""; // Clear out the loading text
+                    tableBody.innerHTML = ""; 
                     
                     if (result.data.length === 0) {
                         tableBody.innerHTML = `<tr><td colspan="5" align="center"><font face="Georgia, serif">No requested appointments found.</font></td></tr>`;
                         return;
                     }
 
-                    // Loop through each person from your Google Sheet data
                     result.data.forEach(person => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
@@ -173,7 +184,6 @@
             });
     }
 
-    // Function 2: SUBMIT form data and instantly update the table
     form.addEventListener('submit', e => {
         e.preventDefault();
         const submitBtn = form.querySelector('input[type="submit"]');
@@ -186,7 +196,7 @@
                 form.reset();
                 submitBtn.value = "Request Appointment";
                 submitBtn.disabled = false;
-                loadRequestedDetails(); // Refresh the list automatically without reloading the site
+                loadRequestedDetails(); 
             })
             .catch(error => {
                 alert('An error occurred.');
@@ -195,7 +205,6 @@
             });
     });
 
-    // Function 3: DELETE an unwanted request
     function deleteRequest(rowNum) {
         if (confirm("Are you sure you want to delete this appointment request?")) {
             const tableBody = document.getElementById('requestsTableBody');
@@ -209,7 +218,7 @@
                 .then(res => res.json())
                 .then(response => {
                     alert("Request successfully deleted!");
-                    loadRequestedDetails(); // Reload the updated table list
+                    loadRequestedDetails(); 
                 });
         }
     }
