@@ -70,70 +70,199 @@
     <hr width="80%" color="#5c1d1d">
 
     <center>
-        <h2><font face="Georgia, serif" color="#5c1d1d">Book a Private Showroom Viewing</font></h2>
+        <h2><font face="Georgia, serif" color="#5c1d1d" id="formHeader">Book a Private Showroom Viewing</font></h2>
         <table bgcolor="#eae3d2" cellpadding="10" style="border: 1px solid #5c1d1d; border-radius: 8px;">
             <tr>
                 <td>
-                   <form id="viewingForm" method="post">
-    <p>
-        <label><font face="Georgia, serif">Full Name:</font></label><br>
-        <input type="text" name="client_name" required size="40">
-    </p>
-    <p>
-        <label><font face="Georgia, serif">Email Address:</font></label><br>
-        <input type="email" name="client_email" required size="40">
-    </p>
-    <p>
-        <label><font face="Georgia, serif">Preferred Car Model:</font></label><br>
-        <select name="car_model">
-            <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
-            <option value="Jaguar E-Type">Jaguar E-Type</option>
-            <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
-        </select>
-    </p>
-    <p>
-        <label><font face="Georgia, serif">Preferred Date:</font></label><br>
-        <input type="date" name="booking_date" required>
-    </p>
-    <p>
-        <center>
-            <input type="submit" value="Request Appointment" style="background-color: #5c1d1d; color: white; padding: 10px 20px; border: none; font-family: Georgia, serif; cursor: pointer;">
-        </center>
-    </p>
-</form>
+                    <form id="viewingForm" method="post">
+                        <input type="hidden" name="action" id="formAction" value="add">
+                        <input type="hidden" name="rowNumber" id="formRowNumber" value="">
 
-<script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbxzIFYpXKMaoVJdeq9mglciuWNwTgMHbvQe8oPmZtvHiV_TaZUmudCIblGoXi8OE9WD/exec'; // <--- Paste your Google Script Web App URL here
-    const form = document.getElementById('viewingForm');
-
-    form.addEventListener('submit', e => {
-        e.preventDefault(); // Prevents the page from refreshing
-        
-        // Change button text to show progress
-        const submitBtn = form.querySelector('input[type="submit"]');
-        submitBtn.value = "Sending...";
-        submitBtn.disabled = true;
-
-        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
-            .then(response => {
-                alert('Thank you! Your private showroom viewing request has been received.');
-                form.reset(); // Clear the form fields
-                submitBtn.value = "Request Appointment";
-                submitBtn.disabled = false;
-            })
-            .catch(error => {
-                console.error('Error!', error.message);
-                alert('An error occurred. Please try again.');
-                submitBtn.value = "Request Appointment";
-                submitBtn.disabled = false;
-            });
-    });
-</script>
+                        <p>
+                            <label><font face="Georgia, serif">Full Name:</font></label><br>
+                            <input type="text" name="client_name" id="client_name" required size="40">
+                        </p>
+                        <p>
+                            <label><font face="Georgia, serif">Email Address:</font></label><br>
+                            <input type="email" name="client_email" id="client_email" required size="40">
+                        </p>
+                        <p>
+                            <label><font face="Georgia, serif">Preferred Car Model:</font></label><br>
+                            <select name="car_model" id="car_model">
+                                <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
+                                <option value="Jaguar E-Type">Jaguar E-Type</option>
+                                <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
+                            </select>
+                        </p>
+                        <p>
+                            <label><font face="Georgia, serif">Preferred Date:</font></label><br>
+                            <input type="date" name="booking_date" id="booking_date" required>
+                        </p>
+                        <p>
+                            <center>
+                                <input type="submit" id="submitBtn" value="Request Appointment" style="background-color: #5c1d1d; color: white; padding: 10px 20px; border: none; font-family: Georgia, serif; cursor: pointer;">
+                                <button type="button" id="cancelEditBtn" style="display:none; padding: 10px 20px; font-family: Georgia, serif; cursor: pointer; margin-left:10px;">Cancel Edit</button>
+                            </center>
+                        </p>
+                    </form>
                 </td>
             </tr>
         </table>
     </center>
 
     <br><br>
+    <hr width="80%" color="#5c1d1d">
+
+    <center>
+        <h2><font face="Georgia, serif" color="#5c1d1d">Submitted Request Dashboard</font></h2>
+        <table border="1" cellpadding="8" cellspacing="0" bgcolor="#ffffff" width="85%" id="submissionsTable">
+            <thead bgcolor="#2c2520">
+                <tr>
+                    <th><font color="white" face="Georgia, serif">Name</font></th>
+                    <th><font color="white" face="Georgia, serif">Email</font></th>
+                    <th><font color="white" face="Georgia, serif">Requested Car</font></th>
+                    <th><font color="white" face="Georgia, serif">Date</font></th>
+                    <th><font color="white" face="Georgia, serif">Actions</font></th>
+                </tr>
+            </thead>
+            <tbody id="submissionsBody">
+                <tr>
+                    <td colspan="5" align="center"><font face="Georgia, serif">Loading submissions...</font></td>
+                </tr>
+            </tbody>
+        </table>
+    </center>
+
+    <br><br>
+
+<script>
+    // Paste your Google Apps Script Deployment Web App URL here
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbzuw_sI6hzZm2wXXe9qk-hD97YsNdLi23Io105mkSoVv6Tvcc4RBqw_NGXfLiLm7TCZ/exec';
+    
+    const form = document.getElementById('viewingForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formAction = document.getElementById('formAction');
+    const formRowNumber = document.getElementById('formRowNumber');
+    const formHeader = document.getElementById('formHeader');
+
+    // Load spreadsheet data as soon as page displays
+    document.addEventListener("DOMContentLoaded", fetchSubmissions);
+
+    // 1. READ DATAS: Pull rows from Google Sheet
+    function fetchSubmissions() {
+        const tbody = document.getElementById('submissionsBody');
+        
+        fetch(scriptURL)
+            .then(res => res.json())
+            .then(response => {
+                if(response.status === "success") {
+                    tbody.innerHTML = ""; // Clear loader text
+                    
+                    if(response.data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5" align="center">No appointment requests found.</td></tr>`;
+                        return;
+                    }
+                    
+                    response.data.forEach(row => {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td><font face="Georgia, serif">${row.client_name}</font></td>
+                            <td><font face="Georgia, serif">${row.client_email}</font></td>
+                            <td><font face="Georgia, serif">${row.car_model}</font></td>
+                            <td><font face="Georgia, serif">${row.booking_date}</font></td>
+                            <td align="center">
+                                <button onclick="populateFormForEdit(${row.rowNumber}, '${escapeHtml(row.client_name)}', '${escapeHtml(row.client_email)}', '${row.car_model}', '${row.booking_date}')" style="background:#b38f44; color:white; border:none; padding:4px 8px; cursor:pointer; font-family:Georgia;">Edit</button>
+                                <button onclick="deleteSubmission(${row.rowNumber})" style="background:#9c2424; color:white; border:none; padding:4px 8px; cursor:pointer; font-family:Georgia; margin-left:5px;">Delete</button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                }
+            })
+            .catch(err => {
+                tbody.innerHTML = `<tr><td colspan="5" align="center" style="color:red;">Error loading entries. Check Web App URL structure.</td></tr>`;
+                console.error(err);
+            });
+    }
+
+    // 2. CREATE & UPDATE SUBMISSIONS
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        const originalBtnValue = submitBtn.value;
+        submitBtn.value = "Processing...";
+        submitBtn.disabled = true;
+
+        fetch(scriptURL, { method: 'POST', body: new FormData(form)})
+            .then(response => response.json())
+            .then(res => {
+                alert(formAction.value === "update" ? 'Entry successfully updated!' : 'Appointment successfully booked!');
+                resetFormState();
+                fetchSubmissions(); // Refresh dashboard list instantly
+            })
+            .catch(error => {
+                alert('An operational mismatch occurred. Try updating script permissions.');
+                submitBtn.value = originalBtnValue;
+                submitBtn.disabled = false;
+            });
+    });
+
+    // 3. EDIT OPTION: Load entry data up into form
+    function populateFormForEdit(rowNum, name, email, model, date) {
+        formHeader.innerText = "Edit Showroom Appointment (Row #" + rowNum + ")";
+        formAction.value = "update";
+        formRowNumber.value = rowNum;
+        
+        document.getElementById('client_name').value = name;
+        document.getElementById('client_email').value = email;
+        document.getElementById('car_model').value = model;
+        document.getElementById('booking_date').value = date;
+        
+        submitBtn.value = "Save Changes";
+        submitBtn.style.backgroundColor = "#b38f44";
+        cancelEditBtn.style.display = "inline-block";
+        
+        // Scroll smoothly up to the form
+        form.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 4. DELETE OPTION: Wipe row instantly
+    function deleteSubmission(rowNum) {
+        if(confirm("Are you absolutely sure you want to delete database record row #" + rowNum + "?")) {
+            const formData = new FormData();
+            formData.append("action", "delete");
+            formData.append("rowNumber", rowNum);
+            
+            document.getElementById('submissionsBody').innerHTML = `<tr><td colspan="5" align="center">Processing deletion...</td></tr>`;
+
+            fetch(scriptURL, { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(response => {
+                    alert("Record successfully deleted!");
+                    resetFormState();
+                    fetchSubmissions();
+                });
+        }
+    }
+
+    // Helper functions to clear states
+    cancelEditBtn.addEventListener('click', resetFormState);
+
+    function resetFormState() {
+        form.reset();
+        formAction.value = "add";
+        formRowNumber.value = "";
+        formHeader.innerText = "Book a Private Showroom Viewing";
+        submitBtn.value = "Request Appointment";
+        submitBtn.style.backgroundColor = "#5c1d1d";
+        submitBtn.disabled = false;
+        cancelEditBtn.style.display = "none";
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+</script>
 </body>
 </html>
