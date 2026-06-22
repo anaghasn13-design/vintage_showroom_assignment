@@ -2,149 +2,411 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vintage Automobile Showroom</title>
+    <style>
+        /* Base Page Styles - Soft Muted Dark Plum & Rose Gold */
+        body {
+            background-color: #1a1523; /* Deep soft plum, easy on the eyes */
+            color: #ece5f0; /* Soft milky cream text */
+            font-family: "Playfair Display", "Times New Roman", serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            letter-spacing: 0.3px;
+        }
+
+        /* Container to structure the page nicely */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Typography & Header Elements */
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Title size: 18px */
+        h1 {
+            font-size: 18px; 
+            color: #ffffff; 
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        /* Headings size: 14px */
+        h2, .section-title {
+            text-align: center;
+            color: #e2b4bd; /* Elegant soft rose gold */
+            font-size: 14px;
+            margin-top: 50px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+        }
+
+        /* Paragraph & General text sizes: 12px */
+        p, .subtitle, .caption, label, td, th {
+            font-size: 12px;
+        }
+
+        .subtitle {
+            font-style: italic;
+            color: #9c8e9f; /* Muted dusty lavender */
+            letter-spacing: 0.5px;
+        }
+
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #31273f; /* Subtle dark border line */
+            width: 60%;
+            margin: 40px auto;
+        }
+
+        /* Announcement Ticker */
+        .ticker-wrap {
+            background-color: lightgray; /* Rose gold banner */
+            overflow: hidden;
+            padding: 10px 0;
+        }
+
+        .ticker-text {
+            color: #1a1523; 
+            font-family: 'Arial', sans-serif;
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            display: inline-block;
+            animation: marquee 28s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes marquee {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* Hero Image Layout */
+        .hero-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .hero-image {
+            max-width: 100%;
+            width: 520px;
+            height: auto;
+            border: 1px solid #473a5a; 
+            padding: 6px;
+            background-color: #231d30;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .caption {
+            font-style: italic;
+            margin-top: 15px;
+            color: #9c8e9f;
+        }
+
+        /* Inventory & Requests Tables */
+        .table-responsive {
+            overflow-x: auto;
+            margin-bottom: 40px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: #231d30; /* Velvet dark table box background */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 14px 16px;
+            text-align: left;
+        }
+
+        th {
+            background-color: white; /* Rose gold table headers */
+            color: #1a1523;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        /* Muted design variant for secondary table header */
+        .requests-table th {
+            background-color: #4e3f5d;
+            color: #ffffff;
+        }
+
+        tr {
+            border-bottom: 1px solid #2f273d;
+        }
+
+        tr:last-child {
+            border-bottom: none;
+        }
+
+        tr:nth-child(even) td {
+            background-color: #292238; /* Soft subtle alternating row striping */
+        }
+
+        table a {
+            color: #f0c9cf; /* Soft pastel pink-gold for clickable text links */
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        table a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Booking Form Card */
+        .form-card {
+            background-color: #231d30; 
+            max-width: 440px;
+            margin: 0 auto;
+            padding: 35px;
+            border: 1px solid #31273f;
+            border-radius: 4px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #e2b4bd;
+            font-weight: 500;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #3c304d;
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 12px;
+            box-sizing: border-box;
+            background-color: #1a1523;
+            color: #ffffff;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #e2b4bd; /* Soft focus bounding ring */
+        }
+
+        /* Interactive Buttons */
+        .btn-submit {
+            background-color: white;
+            color: #1a1523;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: #ffffff;
+            color: #1a1523;
+        }
+
+        .btn-submit:disabled {
+            background-color: #31273f;
+            color: #71647a;
+            cursor: not-allowed;
+        }
+
+        .btn-delete {
+            background-color: gray; /* Muted desaturated soft red button */
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 11px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-delete:hover {
+            background-color: #c95c5c;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
-<body bgcolor="#f4f0ea" text="#2c2520">
+<body>
 
-    <center>
-        <h1>
-            <font face="Georgia, Garamond, serif" size="7" color="#5c1d1d">
-                Classic Wheels Showroom
-            </font>
-        </h1>
-        <p>
-            <font face="Georgia, Garamond, serif" size="4">
-                <i>Timeless Elegance on Four Wheels. Est. 1920</i>
-            </font>
-        </p>
-    </center>
-
-    <hr width="80%" color="#5c1d1d">
-
-    <marquee bgcolor="#5c1d1d" scrollamount="5">
-        <font face="Arial, sans-serif" color="#ffffff" size="4">
+    <!-- Infinite announcement ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker-text">
+            * UPCOMING AUCTION: 1963 Aston Martin DB5 on June 25th! * Grand Concours d'Elegance on July 12th! * Bidding starts at 10:00 AM! * &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             * UPCOMING AUCTION: 1963 Aston Martin DB5 on June 25th! * Grand Concours d'Elegance on July 12th! * Bidding starts at 10:00 AM! *
-        </font>
-    </marquee>
+        </div>
+    </div>
 
-    <br><br>
+    <div class="container">
+        
+        <header>
+            <h1>Classic Wheels Showroom</h1>
+            <div class="subtitle">Timeless Elegance on Four Wheels. Est. 1920</div>
+        </header>
 
-    <center>
-        <img src="astonmartin.jpg" alt="Vintage Aston Martin" width="600" border="5" style="border-color: #5c1d1d;">
-        <p><font face="Georgia, serif"><i>Figure 1: The legendary 1963 Aston Martin DB5, available for private viewing.</i></font></p>
-    </center>
+        <hr>
 
-    <br>
+        <!-- Featured Display Section -->
+        <section class="hero-section">
+            <img src="astonmartin.jpg" alt="Vintage Aston Martin" class="hero-image">
+            <p class="caption">Figure 1: The legendary 1963 Aston Martin DB5, available for private viewing.</p>
+        </section>
 
-    <center>
-        <h2><font face="Georgia, serif" color="#5c1d1d">Our Current Inventory</font></h2>
-        <table border="2" cellpadding="10" cellspacing="0" bgcolor="#ffffff" width="70%">
-            <tr bgcolor="#5c1d1d">
-                <th><font color="white" face="Georgia, serif">Model Year</font></th>
-                <th><font color="white" face="Georgia, serif">Car Model (Click for History)</font></th>
-                <th><font color="white" face="Georgia, serif">Engine Type</font></th>
-                <th><font color="white" face="Georgia, serif">Estimated Value</font></th>
-            </tr>
-            <tr>
-                <td><font face="Georgia, serif">1954</font></td>
-                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Mercedes-Benz_300_SL" target="_blank" style="color: #5c1d1d; font-weight: bold;">Mercedes-Benz 300SL Gullwing</a></font></td>
-                <td><font face="Georgia, serif">3.0L I6</font></td>
-                <td><font face="Georgia, serif">$1,500,000</font></td>
-            </tr>
-            <tr>
-                <td><font face="Georgia, serif">1961</font></td>
-                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Jaguar_E-Type" target="_blank" style="color: #5c1d1d; font-weight: bold;">Jaguar E-Type Series 1 Roadster</a></font></td>
-                <td><font face="Georgia, serif">3.8L I6</font></td>
-                <td><font face="Georgia, serif">$250,000</font></td>
-            </tr>
-            <tr>
-                <td><font face="Georgia, serif">1967</font></td>
-                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Shelby_Mustang" target="_blank" style="color: #5c1d1d; font-weight: bold;">Shelby Mustang GT500</a></font></td>
-                <td><font face="Georgia, serif">7.0L V8</font></td>
-                <td><font face="Georgia, serif">$350,000</font></td>
-            </tr>
-            <tr>
-                <td><font face="Georgia, serif">1962</font></td>
-                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Ferrari_250_GTO" target="_blank" style="color: #5c1d1d; font-weight: bold;">Ferrari 250 GTO</a></font></td>
-                <td><font face="Georgia, serif">3.0L V12</font></td>
-                <td><font face="Georgia, serif">$70,000,000</font></td>
-            </tr>
-            <tr>
-                <td><font face="Georgia, serif">1970</font></td>
-                <td><font face="Georgia, serif"><a href="https://en.wikipedia.org/wiki/Dodge_Charger_(B-body)" target="_blank" style="color: #5c1d1d; font-weight: bold;">Dodge Charger R/T</a></font></td>
-                <td><font face="Georgia, serif">7.2L V8</font></td>
-                <td><font face="Georgia, serif">$110,000</font></td>
-            </tr>
-        </table>
-    </center>
+        <hr>
 
-    <br><br>
-    <hr width="80%" color="#5c1d1d">
+        <!-- Inventory List -->
+        <section>
+            <h2 class="section-title">Our Current Inventory</h2>
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Model Year</th>
+                            <th>Car Model (Click for History)</th>
+                            <th>Engine Type</th>
+                            <th>Estimated Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1954</td>
+                            <td><a href="https://en.wikipedia.org/wiki/Mercedes-Benz_300_SL" target="_blank">Mercedes-Benz 300SL Gullwing</a></td>
+                            <td>3.0L I6</td>
+                            <td>$1,500,000</td>
+                        </tr>
+                        <tr>
+                            <td>1961</td>
+                            <td><a href="https://en.wikipedia.org/wiki/Jaguar_E-Type" target="_blank">Jaguar E-Type Series 1 Roadster</a></td>
+                            <td>3.8L I6</td>
+                            <td>$250,000</td>
+                        </tr>
+                        <tr>
+                            <td>1967</td>
+                            <td><a href="https://en.wikipedia.org/wiki/Shelby_Mustang" target="_blank">Shelby Mustang GT500</a></td>
+                            <td>7.0L V8</td>
+                            <td>$350,000</td>
+                        </tr>
+                        <tr>
+                            <td>1962</td>
+                            <td><a href="https://en.wikipedia.org/wiki/Ferrari_250_GTO" target="_blank">Ferrari 250 GTO</a></td>
+                            <td>3.0L V12</td>
+                            <td>$70,000,000</td>
+                        </tr>
+                        <tr>
+                            <td>1970</td>
+                            <td><a href="https://en.wikipedia.org/wiki/Dodge_Charger_(B-body)" target="_blank">Dodge Charger R/T</a></td>
+                            <td>7.2L V8</td>
+                            <td>$110,000</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-    <center>
-        <h2><font face="Georgia, serif" color="#5c1d1d">Book a Private Showroom Viewing</font></h2>
-        <table bgcolor="#eae3d2" cellpadding="10" style="border: 1px solid #5c1d1d; border-radius: 8px;">
-            <tr>
-                <td>
-                    <form id="viewingForm" method="post">
-                        <p>
-                            <label><font face="Georgia, serif">Full Name:</font></label><br>
-                            <input type="text" name="client_name" required size="40">
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Email Address:</font></label><br>
-                            <input type="email" name="client_email" required size="40">
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Preferred Car Model:</font></label><br>
-                            <select name="car_model">
-                                <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
-                                <option value="Jaguar E-Type">Jaguar E-Type</option>
-                                <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
-                                <option value="Ferrari 250 GTO">Ferrari 250 GTO</option>
-                                <option value="Dodge Charger R/T">Dodge Charger R/T</option>
-                            </select>
-                        </p>
-                        <p>
-                            <label><font face="Georgia, serif">Preferred Date:</font></label><br>
-                            <input type="date" name="booking_date" required>
-                        </p>
-                        <p>
-                            <center>
-                                <input type="submit" value="Request Appointment" style="background-color: #5c1d1d; color: white; padding: 10px 20px; border: none; font-family: Georgia, serif; cursor: pointer;">
-                            </center>
-                        </p>
-                    </form>
-                </td>
-            </tr>
-        </table>
-    </center>
+        <hr>
 
-    <br><br>
-    <hr width="80%" color="#5c1d1d">
+        <!-- Booking System -->
+        <section>
+            <h2 class="section-title">Book a Private Showroom Viewing</h2>
+            <div class="form-card">
+                <form id="viewingForm" method="post">
+                    <div class="form-group">
+                        <label>Full Name:</label>
+                        <input type="text" name="client_name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Email Address:</label>
+                        <input type="email" name="client_email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preferred Car Model:</label>
+                        <select name="car_model">
+                            <option value="Mercedes-Benz 300SL">Mercedes-Benz 300SL</option>
+                            <option value="Jaguar E-Type">Jaguar E-Type</option>
+                            <option value="Shelby Mustang GT500">Shelby Mustang GT500</option>
+                            <option value="Ferrari 250 GTO">Ferrari 250 GTO</option>
+                            <option value="Dodge Charger R/T">Dodge Charger R/T</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Preferred Date:</label>
+                        <input type="date" name="booking_date" required>
+                    </div>
+                    
+                    <input type="submit" value="Request Appointment" class="btn-submit">
+                </form>
+            </div>
+        </section>
 
-    <center>
-        <h2><font face="Georgia, serif" color="#5c1d1d">Active Appointment Requests</font></h2>
-        <table border="2" cellpadding="10" cellspacing="0" bgcolor="#ffffff" width="85%">
-            <tr bgcolor="#2c2520">
-                <th><font color="white" face="Georgia, serif">Client Name</font></th>
-                <th><font color="white" face="Georgia, serif">Email Address</font></th>
-                <th><font color="white" face="Georgia, serif">Selected Car</font></th>
-                <th><font color="white" face="Georgia, serif">Requested Date</font></th>
-                <th><font color="white" face="Georgia, serif">Action</font></th>
-            </tr>
-            <tbody id="requestsTableBody">
-                <tr>
-                    <td colspan="5" align="center"><font face="Georgia, serif">Loading requested appointments...</font></td>
-                </tr>
-            </tbody>
-        </table>
-    </center>
+        <hr>
 
-    <br><br>
+        <!-- Realtime Booking Dashboard -->
+        <section style="margin-bottom: 60px;">
+            <h2 class="section-title">Active Appointment Requests</h2>
+            <div class="table-responsive">
+                <table class="requests-table">
+                    <thead>
+                        <tr>
+                            <th>Client Name</th>
+                            <th>Email Address</th>
+                            <th>Selected Car</th>
+                            <th>Requested Date</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="requestsTableBody">
+                        <tr>
+                            <td colspan="5" class="text-center">Loading requested appointments...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </div>
 
 <script>
-    // ⚠️ PASTE YOUR GOOGLE WEB APP URL INSIDE THE SINGLE QUOTES BELOW:
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyTzwzFUzHNVE96PIm35cV78PgQqhJTv48Xq9hk6zAPBaEhqXQCLgH2YXIpPfWh4gCM/exec'; 
     const form = document.getElementById('viewingForm');
 
@@ -160,19 +422,19 @@
                     tableBody.innerHTML = ""; 
                     
                     if (result.data.length === 0) {
-                        tableBody.innerHTML = `<tr><td colspan="5" align="center"><font face="Georgia, serif">No requested appointments found.</font></td></tr>`;
+                        tableBody.innerHTML = `<tr><td colspan="5" class="text-center">No requested appointments found.</td></tr>`;
                         return;
                     }
 
                     result.data.forEach(person => {
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                            <td><font face="Georgia, serif">${person.client_name}</font></td>
-                            <td><font face="Georgia, serif">${person.client_email}</font></td>
-                            <td><font face="Georgia, serif">${person.car_model}</font></td>
-                            <td><font face="Georgia, serif">${person.booking_date}</font></td>
-                            <td align="center">
-                                <button onclick="deleteRequest(${person.rowNumber})" style="background-color: #9c2424; color: white; border: none; padding: 6px 12px; font-family: Georgia, serif; cursor: pointer;">Delete</button>
+                            <td>${person.client_name}</td>
+                            <td>${person.client_email}</td>
+                            <td>${person.car_model}</td>
+                            <td>${person.booking_date}</td>
+                            <td class="text-center">
+                                <button onclick="deleteRequest(${person.rowNumber})" class="btn-delete">Delete</button>
                             </td>
                         `;
                         tableBody.appendChild(row);
@@ -180,13 +442,13 @@
                 }
             })
             .catch(error => {
-                tableBody.innerHTML = `<tr><td colspan="5" align="center" style="color: red;"><font face="Georgia, serif">Failed to fetch list. Verify your Web App deployment.</font></td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="5" class="text-center" style="color: #df7a7a; font-weight: bold;">Failed to fetch list. Verify your Web App deployment.</td></tr>`;
             });
     }
 
     form.addEventListener('submit', e => {
         e.preventDefault();
-        const submitBtn = form.querySelector('input[type="submit"]');
+        const submitBtn = form.querySelector('.btn-submit');
         submitBtn.value = "Sending...";
         submitBtn.disabled = true;
 
@@ -208,7 +470,7 @@
     function deleteRequest(rowNum) {
         if (confirm("Are you sure you want to delete this appointment request?")) {
             const tableBody = document.getElementById('requestsTableBody');
-            tableBody.innerHTML = `<tr><td colspan="5" align="center"><font face="Georgia, serif">Deleting entry...</font></td></tr>`;
+            tableBody.innerHTML = `<tr><td colspan="5" class="text-center">Deleting entry...</td></tr>`;
 
             const cleanFormData = new FormData();
             cleanFormData.append("action", "delete");
